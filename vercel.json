@@ -22,7 +22,7 @@
             ]
         },
         {
-            "source": "/(.*\\.(js|css|svg|png|jpg))",
+            "source": "/(.*)\\.(js|css|svg|png|jpg)",
             "headers": [
                 {
                     "key": "Cache-Control",
