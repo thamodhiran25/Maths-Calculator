@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus - Numerical Methods Solver</title>
+    <meta name="description"
+        content="A premium numerical methods solver supporting Gauss Elimination, Newton Forward Interpolation, and RK4 methods.">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <!-- Math.js for evaluating expressions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="background-animation">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Front Page Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <h1 class="splash-title">Nexus<span class="accent">Solver</span></h1>
+            <p class="splash-subtitle">The Next-Generation Engineering Mathematics Engine</p>
+            <button id="enter-workspace-btn" class="glow-btn">Explore</button>
+            <div class="splash-features">
+                <span>[ Gauss Elimination ]</span>
+                <span>[ Newton Interpolation ]</span>
+                <span>[ RK4 Method ]</span>
+            </div>
+            <div class="splash-footer">
+                <p>Designed for complex numerical problem solving.</p>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <span class="logo-icon">∑</span>
+            <h1>Nexus<span class="accent">Solver</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><button id="nav-splash" class="nav-btn splash-return-btn">⟵ Back</button></li>
+            <li><a href="#" class="nav-btn active" data-target="home">Home</a></li>
+            <li><a href="#" class="nav-btn" data-target="gauss">Gauss Elimination</a></li>
+            <li><a href="#" class="nav-btn" data-target="newton">Newton Interpolation</a></li>
+            <li><a href="#" class="nav-btn" data-target="rk4">RK4 Method</a></li>
+            <li><a href="#" class="nav-btn" data-target="about">About</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        <!-- Dashboard / Main Menu -->
+        <section id="home" class="view-section active">
+            <div class="hero">
+                <h2>Advanced Engineering Mathematics Engine</h2>
+                <p>Solve complex numerical problems instantly through a state-of-the-art interactive interface.</p>
+
+                <div class="cards-grid">
+                    <div class="method-card" data-trigger="gauss">
+                        <div class="card-icon">[ A ][ x ] = [ b ]</div>
+                        <h3>Gauss Elimination</h3>
+                        <p>Solve system of linear equations by converting a matrix into upper triangular form.</p>
+                        <button class="primary-btn">Launch Solver</button>
+                    </div>
+                    <div class="method-card" data-trigger="newton">
+                        <div class="card-icon">f(x) ≈ P(x)</div>
+                        <h3>Newton Forward</h3>
+                        <p>Estimate missing data values using forward difference table interpolation.</p>
+                        <button class="primary-btn">Launch Solver</button>
+                    </div>
+                    <div class="method-card" data-trigger="rk4">
+                        <div class="card-icon">dy/dx = f(x,y)</div>
+                        <h3>Runge–Kutta (RK4)</h3>
+                        <p>Solve first-order ordinary differential equations iteratively with high precision.</p>
+                        <button class="primary-btn">Launch Solver</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gauss Elimination Section -->
+        <section id="gauss" class="view-section">
+            <div class="glass-panel">
+                <header class="section-header">
+                    <h2>Gauss Elimination Method</h2>
+                    <p>Enter the number of variables to generate the coefficient matrix.</p>
+                </header>
+
+                <div class="input-group">
+                    <label for="gauss-n">Number of variables (n):</label>
+                    <input type="number" id="gauss-n" min="2" max="10" value="3" class="stylish-input">
+                    <button id="gauss-generate" class="secondary-btn">Generate Matrix</button>
+                </div>
+
+                <div id="gauss-matrix-container" class="matrix-container hidden">
+                    <h3>Coefficient Matrix & Constants</h3>
+                    <div class="matrix-grid-wrapper">
+                        <div id="gauss-inputs" class="matrix-grid"></div>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="gauss-solve" class="primary-btn">Solve System</button>
+                        <button id="gauss-reset" class="outline-btn">Reset</button>
+                        <button class="outline-btn load-sample-btn" data-case="gauss">Load Sample</button>
+                    </div>
+                </div>
+
+                <div id="gauss-error" class="error-box hidden"></div>
+
+                <div id="gauss-results" class="results-container hidden">
+                    <h3>Solution Vector</h3>
+                    <div id="gauss-solution" class="solution-display"></div>
+
+                    <div class="accordion">
+                        <div class="accordion-header">View Intermediate Steps <span class="icon">▼</span></div>
+                        <div class="accordion-content" id="gauss-steps"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newton Forward Interpolation Section -->
+        <section id="newton" class="view-section">
+            <div class="glass-panel">
+                <header class="section-header">
+                    <h2>Newton Forward Interpolation</h2>
+                    <p>Enter equally spaced data points and the target x to interpolate.</p>
+                </header>
+
+                <div class="input-group">
+                    <label for="newton-n">Number of data points:</label>
+                    <input type="number" id="newton-n" min="2" max="15" value="5" class="stylish-input">
+                    <button id="newton-generate" class="secondary-btn">Generate Inputs</button>
+                </div>
+
+                <div id="newton-data-container" class="hidden">
+                    <div class="table-input-wrapper">
+                        <table class="modern-table">
+                            <thead>
+                                <tr>
+                                    <th>Point (i)</th>
+                                    <th>x value</th>
+                                    <th>y = f(x)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="newton-inputs-tbody"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="target-val-wrapper">
+                        <label for="newton-target">Value to estimate (x):</label>
+                        <input type="number" step="any" id="newton-target" class="stylish-input">
+                    </div>
+
+                    <div class="action-buttons">
+                        <button id="newton-solve" class="primary-btn">Compute Interpolation</button>
+                        <button id="newton-reset" class="outline-btn">Reset</button>
+                        <button class="outline-btn load-sample-btn" data-case="newton">Load Sample</button>
+                    </div>
+                </div>
+
+                <div id="newton-error" class="error-box hidden"></div>
+
+                <div id="newton-results" class="results-container hidden">
+                    <h3>Interpolated Result</h3>
+                    <div id="newton-solution" class="solution-display"></div>
+
+                    <div class="accordion">
+                        <div class="accordion-header">View Forward Difference Table <span class="icon">▼</span></div>
+                        <div class="accordion-content table-responsive" id="newton-table"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RK4 Section -->
+        <section id="rk4" class="view-section">
+            <div class="glass-panel">
+                <header class="section-header">
+                    <h2>Runge-Kutta 4th Order (RK4)</h2>
+                    <p>Provide the ODE details to compute step-by-step approximation.</p>
+                </header>
+
+                <div class="rk4-grid">
+                    <div class="input-card">
+                        <label for="rk4-eq">Differential Equation <span>dy/dx = f(x, y)</span></label>
+                        <input type="text" id="rk4-eq" placeholder="e.g. x + y" class="stylish-input font-mono">
+                    </div>
+                    <div class="input-card">
+                        <label for="rk4-x0">Initial x (x₀)</label>
+                        <input type="number" step="any" id="rk4-x0" placeholder="0" class="stylish-input">
+                    </div>
+                    <div class="input-card">
+                        <label for="rk4-y0">Initial y (y₀)</label>
+                        <input type="number" step="any" id="rk4-y0" placeholder="1" class="stylish-input">
+                    </div>
+                    <div class="input-card">
+                        <label for="rk4-h">Step size (h)</label>
+                        <input type="number" step="any" id="rk4-h" placeholder="0.1" class="stylish-input">
+                    </div>
+                    <div class="input-card">
+                        <label for="rk4-xn">Target x (xₙ)</label>
+                        <input type="number" step="any" id="rk4-xn" placeholder="0.2" class="stylish-input">
+                    </div>
+                </div>
+
+                <div class="action-buttons mt-4">
+                    <button id="rk4-solve" class="primary-btn">Compute RK4</button>
+                    <button id="rk4-reset" class="outline-btn">Reset</button>
+                    <button class="outline-btn load-sample-btn" data-case="rk4">Load Sample</button>
+                </div>
+
+                <div id="rk4-error" class="error-box hidden"></div>
+
+                <div id="rk4-results" class="results-container hidden">
+                    <h3>Final Computation</h3>
+                    <div id="rk4-solution" class="solution-display"></div>
+
+                    <div class="accordion">
+                        <div class="accordion-header">View Iteration Table <span class="icon">▼</span></div>
+                        <div class="accordion-content table-responsive" id="rk4-table"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="view-section">
+            <div class="glass-panel">
+                <header class="section-header">
+                    <h2>About NexusSolver</h2>
+                    <p>The premier web utility designed for advanced engineering mathematics.</p>
+                </header>
+
+                <div class="about-content" style="color: var(--text-muted); line-height: 1.8;">
+                    <p style="font-size: 1.1rem; margin-bottom: 2rem;"><strong>NexusSolver</strong> is a
+                        next-generation interactive web suite built to empower students, engineers, and researchers
+                        by simplifying complex numerical analysis. Combining rigorous mathematical logic with an
+                        aesthetic, modern web-interface, it provides instant, step-by-step computations directly
+                        within your browser.</p>
+
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+                        <div
+                            style="background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); padding: 1.5rem; border-radius: 12px;">
+                            <h4
+                                style="color: var(--secondary); margin-bottom: 0.5rem; font-family: var(--font-mono); font-size: 1rem;">
+                                // Gauss Elimination Engine</h4>
+                            <p style="font-size: 0.95rem;">Capabile of handling extensive variable systems with
+                                dynamic matrix generation. View explicit, step-by-step matrix reduction and pivot
+                                operations up to 10 dimensions.</p>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); padding: 1.5rem; border-radius: 12px;">
+                            <h4
+                                style="color: var(--secondary); margin-bottom: 0.5rem; font-family: var(--font-mono); font-size: 1rem;">
+                                // Newton Forward Interpolation</h4>
+                            <p style="font-size: 0.95rem;">Compute highly accurate missing data estimations using
+                                automated, responsive forward difference tables.</p>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.03); border: 1px solid var(--panel-border); padding: 1.5rem; border-radius: 12px;">
+                            <h4
+                                style="color: var(--secondary); margin-bottom: 0.5rem; font-family: var(--font-mono); font-size: 1rem;">
+                                // Runge-Kutta (RK4)</h4>
+                            <p style="font-size: 0.95rem;">A robust, high-precision differential equation solver
+                                utilizing the 4th order iterative approach. Complete with granular step-tracking.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--panel-border); padding-top: 1.5rem; text-align: center;">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- App Logic -->
+    <script defer src="js/gauss.js"></script>
+    <script defer src="js/newton.js"></script>
+    <script defer src="js/rk4.js"></script>
+    <script defer src="js/app.js"></script>
+</body>
+
+</html>
